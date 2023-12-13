@@ -13,7 +13,7 @@ double step;
 int main() 
 {
     // Different number of threads to test
-    std::vector<int> threads = {1, 2, 4, 8, 12, 16}; 
+    std::vector<int> threads = {1, 2, 4, 8, 12, 16, 32, 64}; 
     std::ofstream resultsFile("Threaded_Pi_Calc_OpenMP_results.txt");
     resultsFile << "Threads, Time taken (s)" << std::endl;
 

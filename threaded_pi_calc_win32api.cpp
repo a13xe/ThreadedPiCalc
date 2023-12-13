@@ -84,7 +84,7 @@ void runCalculation(int numThreads)
 
 int main() 
 {
-    std::vector<int> threadCounts = {1, 2, 4, 8, 12, 16};
+    std::vector<int> threadCounts = {1, 2, 4, 8, 12, 16, 32, 64};
     std::ofstream resultsFile("threaded_pi_calc_win32api_results.txt");
     resultsFile << "Threads, Time taken (s)" << std::endl;
 
