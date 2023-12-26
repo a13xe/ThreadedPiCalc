@@ -43,7 +43,7 @@ int main()
 
         pi = step * sum;
 
-        std::cout << "Threads: " << numThreads << ", Time taken: " << duration.count() << " s\n";
+        std::cout << "Threads: " << numThreads << ", Time taken: " << duration.count() << " s, Calculated Pi: " << pi << "\n";
         resultsFile << numThreads << ", " << duration.count() << std::endl;
     }
 

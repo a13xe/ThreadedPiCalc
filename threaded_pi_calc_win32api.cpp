@@ -88,7 +88,7 @@ int main()
         auto endTime = std::chrono::high_resolution_clock::now();
         std::chrono::duration<double> duration = endTime - startTime;
 
-        std::cout << "Threads: " << numThreads << ", Time taken: " << duration.count() << " s\n";
+        std::cout << "Threads: " << numThreads << ", Time taken: " << duration.count() << " s, Calculated Pi: " << pi << "\n";
         resultsFile << numThreads << ", " << duration.count() << std::endl;
     }
 
