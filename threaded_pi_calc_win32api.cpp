@@ -3,41 +3,26 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
-
+#include <atomic>
 
 // Block size for distribution
-const int blockSize = 1308080; 
+const int blockSize = 1308080;
 // Total iterations
-const int N = 100000000; 
+const int N = 100000000;
 const int numBlocks = N / blockSize;
 
-
 CRITICAL_SECTION cs;
+std::atomic<int> nextBlock(0);
 double pi = 0.0;
 std::vector<bool> processedBlocks(numBlocks, false);
 
-
 DWORD WINAPI CalculatePiBlock(LPVOID param) 
 {
-    int threadNum = *(int*)param;
     while (true) 
     {
-        int blockIndex = -1;
-        EnterCriticalSection(&cs);
+        int blockIndex = nextBlock.fetch_add(1);
 
-        for (int i = 0; i < numBlocks; ++i) 
-        {
-            if (!processedBlocks[i]) 
-            {
-                processedBlocks[i] = true;
-                blockIndex = i;
-                break;
-            }
-        }
-
-        LeaveCriticalSection(&cs);
-
-        if (blockIndex == -1) 
+        if (blockIndex >= numBlocks)
         {
             break;
         }
@@ -57,7 +42,6 @@ DWORD WINAPI CalculatePiBlock(LPVOID param)
     }
     return 0;
 }
-
 
 void runCalculation(int numThreads) 
 {
@@ -81,7 +65,6 @@ void runCalculation(int numThreads)
     DeleteCriticalSection(&cs);
 }
 
-
 int main() 
 {
     std::vector<int> threadCounts = {1, 2, 4, 8, 12, 16, 32, 64};
@@ -91,6 +74,7 @@ int main()
     for (int numThreads : threadCounts) 
     {
         pi = 0.0;
+        nextBlock.store(0);
         processedBlocks.assign(numBlocks, false);
 
         // Start timing
